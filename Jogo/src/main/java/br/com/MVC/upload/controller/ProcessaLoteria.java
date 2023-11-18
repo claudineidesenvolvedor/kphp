@@ -14,13 +14,11 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-
 import br.com.MVC.upload.beans.Bolas;
 
 public class ProcessaLoteria {
@@ -50,20 +48,22 @@ public class ProcessaLoteria {
 
 		// Set font 1 to 12 point type, blue and bold
 		f.setFontHeightInPoints((short) 12);
-		f.setColor(HSSFColor.RED.index);
-		f.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		f.setColor(HSSFFont.COLOR_RED);
+		//f.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		f.setBold(true);
 
 		// Set font 2 to 10 point type, red and bold
 		f2.setFontHeightInPoints((short) 10);
 		f2.setColor(HSSFFont.COLOR_RED);
-		f2.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		//f2.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		f2.setBold(true);
 
 		// Set cell style and formatting
 		cs.setFont(f);
 		cs.setDataFormat(df.getFormat("#,##0.0"));
 
 		// Set the other cell style and formatting
-		cs2.setBorderBottom(cs2.BORDER_THIN);
+		cs2.setBorderBottom(cs2.getBorderTop());
 		cs2.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"));
 		cs2.setFont(f2);
 		// criando a cells ou colunas object reference
@@ -89,6 +89,7 @@ public class ProcessaLoteria {
 		Workbook wb = new HSSFWorkbook(new FileInputStream(nomeArquivo));
 		List<Bolas> lista = new ArrayList<Bolas>();
 		Row r = null;
+		
 		Sheet aba = wb.createSheet(NomeAba);
 		// Se quiser ler a planilha toda
 
@@ -97,10 +98,10 @@ public class ProcessaLoteria {
 			for (Cell cellFor : rowFor) {
 				Bolas bolas = new Bolas();
 				switch (cellFor.getCellType()) {
-				case Cell.CELL_TYPE_STRING:
+				case STRING:
 					System.out.println(cellFor.getRichStringCellValue().getString());
 					break;
-				case Cell.CELL_TYPE_NUMERIC:
+				case NUMERIC:
 					if (DateUtil.isCellDateFormatted(cellFor)) {
 						System.out.println(cellFor.getDateCellValue());
 					} else {
